@@ -1,0 +1,70 @@
+# ==============================
+# Maven
+# ==============================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ==============================
+# IDE - IntelliJ IDEA
+# ==============================
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# IntelliJ module files
+out/
+
+# ==============================
+# Eclipse
+# ==============================
+.classpath
+.project
+.settings/
+
+# ==============================
+# VS Code
+# ==============================
+.vscode/
+
+# ==============================
+# Spring Boot / Java
+# ==============================
+*.class
+*.log
+
+# ==============================
+# OS generated files
+# ==============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==============================
+# Environment / Secrets
+# ==============================
+.env
+.env.*
+!.env.example
+
+# Local configuration containing secrets
+application-local.properties
+application-local.yml
+application-secret.properties
+application-secret.yml
+
+# ==============================
+# Logs
+# ==============================
+logs/
+*.log
+
+# ==============================
+# Temporary files
+# ==============================
+*.tmp
+*.temp
+*.swp
+*.swo
