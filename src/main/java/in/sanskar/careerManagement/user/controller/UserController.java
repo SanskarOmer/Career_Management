@@ -28,4 +28,9 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<String> getCurrentUser() {
+        return ResponseEntity.ok("You are authenticated");
+    }
 }

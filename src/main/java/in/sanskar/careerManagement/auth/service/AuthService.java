@@ -1,6 +1,7 @@
 package in.sanskar.careerManagement.auth.service;
 
 import in.sanskar.careerManagement.auth.dto.LoginRequest;
+import in.sanskar.careerManagement.auth.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,8 +12,9 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
-    public void authenticate(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
@@ -21,5 +23,12 @@ public class AuthService {
                 );
 
         authenticationManager.authenticate(authenticationToken);
+
+        String token = jwtService.generateToken(request.getEmail());
+
+        return LoginResponse.builder()
+                .accessToken(token)
+                .tokenType("Bearer")
+                .build();
     }
 }
