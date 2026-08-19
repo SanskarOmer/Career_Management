@@ -4,6 +4,7 @@ package in.sanskar.careerManagement.user.service;
 import in.sanskar.careerManagement.exception.EmailAlreadyExistsException;
 import in.sanskar.careerManagement.user.dto.UserRegistrationRequest;
 import in.sanskar.careerManagement.user.dto.UserResponse;
+import in.sanskar.careerManagement.user.entity.AuthProvider;
 import in.sanskar.careerManagement.user.entity.User;
 import in.sanskar.careerManagement.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class UserService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .authProvider(AuthProvider.LOCAL)
                 .build();
 
         User savedUser = userRepository.save(user);

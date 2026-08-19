@@ -1,6 +1,7 @@
 package in.sanskar.careerManagement.config;
 
 import in.sanskar.careerManagement.auth.filter.JwtAuthenticationFilter;
+import in.sanskar.careerManagement.auth.handler.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final OAuth2AuthenticationSuccessHandler
+            oauth2AuthenticationSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -51,6 +54,11 @@ public class SecurityConfig {
                                 "/api/auth/**"
                         ).permitAll()
                         .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 ->
+                        oauth2.successHandler(
+                                oauth2AuthenticationSuccessHandler
+                        )
                 )
 
                 .addFilterBefore(
