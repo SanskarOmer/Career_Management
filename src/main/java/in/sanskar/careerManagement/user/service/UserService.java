@@ -1,7 +1,7 @@
 package in.sanskar.careerManagement.user.service;
 
-
 import in.sanskar.careerManagement.exception.EmailAlreadyExistsException;
+import in.sanskar.careerManagement.exception.ResourceNotFoundException;
 import in.sanskar.careerManagement.user.dto.UserRegistrationRequest;
 import in.sanskar.careerManagement.user.dto.UserResponse;
 import in.sanskar.careerManagement.user.entity.AuthProvider;
@@ -21,7 +21,9 @@ public class UserService {
     public UserResponse register(UserRegistrationRequest request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new EmailAlreadyExistsException("Email is already registered");
+            throw new EmailAlreadyExistsException(
+                    "Email is already registered"
+            );
         }
 
         User user = User.builder()
@@ -33,11 +35,26 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
+        return mapToResponse(savedUser);
+    }
+
+    public UserResponse getUserByEmail(String email) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User", email)
+                );
+
+        return mapToResponse(user);
+    }
+
+    private UserResponse mapToResponse(User user) {
+
         return UserResponse.builder()
-                .id(savedUser.getId())
-                .name(savedUser.getName())
-                .email(savedUser.getEmail())
-                .createdAt(savedUser.getCreatedAt())
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .createdAt(user.getCreatedAt())
                 .build();
     }
 }

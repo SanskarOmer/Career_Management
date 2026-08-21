@@ -22,6 +22,9 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler
             oauth2AuthenticationSuccessHandler;
 
+    private final RestAuthenticationEntryPoint
+            restAuthenticationEntryPoint;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -53,8 +56,24 @@ public class SecurityConfig {
                                 "/api/users",
                                 "/api/auth/**"
                         ).permitAll()
-                        .anyRequest().authenticated()
+
+                        .requestMatchers("/api/admin/**")
+                        .hasRole("ADMIN")
+
+                        .anyRequest()
+                        .authenticated()
                 )
+
+                .exceptionHandling(exception ->
+                        exception
+                                .defaultAuthenticationEntryPointFor(
+                                        restAuthenticationEntryPoint,
+                                        request ->
+                                                request.getRequestURI()
+                                                        .startsWith("/api/")
+                                )
+                )
+
                 .oauth2Login(oauth2 ->
                         oauth2.successHandler(
                                 oauth2AuthenticationSuccessHandler

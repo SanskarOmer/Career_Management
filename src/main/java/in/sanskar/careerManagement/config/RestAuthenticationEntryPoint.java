@@ -5,15 +5,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Component
-public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
+public class RestAuthenticationEntryPoint
+        implements AuthenticationEntryPoint {
 
     @Override
     public void commence(
@@ -25,10 +22,12 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
 
-        response.getWriter().write(
-                objectMapper.writeValueAsString(
-                        Map.of("message", "Authentication required")
-                )
-        );
+        response.getWriter().write("""
+                {
+                    "status": 401,
+                    "error": "Unauthorized",
+                    "message": "Authentication required"
+                }
+                """);
     }
 }

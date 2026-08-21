@@ -39,6 +39,10 @@ public class User {
     private AuthProvider authProvider;
 
     private String providerId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private Role role = Role.USER;
 
     @PrePersist
     protected void onCreate() {
